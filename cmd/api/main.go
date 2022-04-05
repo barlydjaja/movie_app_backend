@@ -14,6 +14,13 @@ import (
 )
 
 const version = "1.0.0"
+const (
+	host     = "db-movieapp.cg9p3jxwbyyb.ap-southeast-3.rds.amazonaws.com"
+	port     = 5432
+	user     = "postgres"
+	password = "P4ssword!"
+	dbname   = "postgres"
+)
 
 type config struct {
 	port int
@@ -40,7 +47,8 @@ func main() {
 
 	flag.IntVar(&cfg.port, "port", 4000, "Server Port to Listen on")
 	flag.StringVar(&cfg.env, "env", "development", "Application Environment (development | production)")
-	flag.StringVar(&cfg.db.dsn, "dsn", "postgres://postgres:P4ssword!@db-movieapp.cg9p3jxwbyyb.ap-southeast-3.rds.amazonaws.com/postgres?sslmode=disable", "postgres connection string")
+	flag.StringVar(&cfg.db.dsn, "dsn", fmt.Sprintf("host=%s port=%d user=%s "+
+		"password=%s dbname=%s sslmode=disable", host, port, user, password, dbname), "postgres connection string")
 	flag.Parse()
 
 	logger := log.New(os.Stdout, "", log.Ldate|log.Ltime)
